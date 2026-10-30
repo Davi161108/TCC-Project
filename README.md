@@ -1,4 +1,4 @@
-# CitySense 🏙️
+# CitySense 
 
 ### Plataforma Inteligente de Monitoramento Colaborativo da Infraestrutura Urbana
 
