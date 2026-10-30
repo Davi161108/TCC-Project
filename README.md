@@ -1,58 +1,87 @@
-# TCC-Project
+# CitySense 🏙️
 
-# CitySense
+### Plataforma Inteligente de Monitoramento Colaborativo da Infraestrutura Urbana
 
-**Plataforma Inteligente de Monitoramento Colaborativo da Infraestrutura Urbana**
+O **CitySense** é um projeto acadêmico que propõe uma plataforma digital colaborativa para registrar, localizar, visualizar e acompanhar problemas relacionados à infraestrutura urbana.
 
-## Sobre o projeto
+A plataforma busca centralizar informações sobre ocorrências como buracos em vias públicas, iluminação defeituosa, calçadas danificadas e descarte irregular de resíduos, utilizando geolocalização e visualização em mapas interativos.
 
-O CitySense é um projeto acadêmico de conclusão do curso Técnico em Desenvolvimento de Sistemas da Proz Educação.
+**Área piloto:** Montes Claros — MG.
 
-A plataforma tem como objetivo permitir o registro, a localização, a visualização e o acompanhamento de ocorrências relacionadas à infraestrutura urbana, utilizando geolocalização e um mapa interativo.
+## Objetivo
 
-O projeto tem como cenário inicial a cidade de Montes Claros–MG.
+Desenvolver uma solução tecnológica que facilite o registro e o acompanhamento colaborativo de problemas urbanos, promovendo a organização e a visualização dessas informações.
 
-## Objetivos
+## Funcionalidades previstas
 
-- Facilitar o registro de ocorrências urbanas.
-- Permitir a identificação geográfica dos problemas.
-- Apresentar ocorrências em um mapa interativo.
-- Possibilitar a consulta e o acompanhamento dos registros.
-- Explorar o uso de inteligência artificial para auxiliar os usuários.
+- Cadastro e autenticação de usuários.
+- Registro de ocorrências urbanas.
+- Geolocalização por dispositivo ou seleção manual no mapa.
+- Visualização de ocorrências em mapa interativo.
+- Filtros por categoria e status.
+- Gerenciamento administrativo.
+- Histórico de alterações das ocorrências.
+- Assistente com inteligência artificial.
+- Interface web responsiva.
+- Aplicação mobile planejada.
 
-## Tecnologias previstas
+## Tecnologias
 
-- HTML5
-- CSS3
-- JavaScript
-- GSAP
-- PHP
-- MySQL
-- Leaflet
-- OpenStreetMap
-- Git e GitHub
-- React Native com Expo, para a aplicação mobile planejada.
+| Área | Tecnologias |
+|---|---|
+| Frontend | HTML5, CSS3 e JavaScript |
+| Animações | GSAP |
+| Backend | PHP |
+| Banco de dados | MySQL |
+| Mapas | Leaflet e OpenStreetMap |
+| Geolocalização | API Geolocation |
+| Mobile | React Native e Expo |
+| Versionamento | Git e GitHub |
 
-## Estrutura do projeto
+## Arquitetura
 
-- `docs/`: documentação técnica.
-- `poc-mapa/`: prova de conceito de geolocalização.
-- `web/`: aplicação web.
-- `backend/`: API e regras de negócio.
-- `mobile/`: aplicação mobile planejada.
-- `database/`: scripts e estrutura do banco de dados.
-- `tests/`: testes do sistema.
+O projeto utilizará uma arquitetura cliente-servidor, com frontend, API REST em PHP e banco de dados MySQL.
 
-## Situação atual
+A aplicação mobile planejada compartilhará a mesma API utilizada pela aplicação web.
 
-- [x] Proposta do projeto enviada para avaliação.
-- [x] Prova de conceito do mapa testada.
-- [ ] Requisitos revisados.
-- [ ] Protótipos das interfaces.
-- [ ] Modelo do banco de dados.
-- [ ] Arquitetura documentada.
-- [ ] Aplicação integrada.
+## Estrutura do repositório
+
+```text
+TCC-Project/
+├── docs/
+│   ├── requisitos.md
+│   ├── arquitetura.md
+│   ├── DER.md
+│   └── prototipos/
+│       └── telas.md
+├── poc-mapa/
+├── web/
+├── backend/
+├── mobile/
+├── database/
+├── tests/
+├── .gitignore
+└── README.md
+```
+
+## Status do desenvolvimento
+
+- [x] Definição da proposta.
+- [x] Aprovação inicial do professor.
+- [x] Criação do repositório.
+- [x] Estruturação inicial de pastas.
+- [x] Prova de conceito de geolocalização com Leaflet e OpenStreetMap.
+- [ ] Documentação técnica completa.
+- [ ] Modelagem e implementação do banco de dados.
+- [ ] Desenvolvimento do frontend.
+- [ ] Desenvolvimento do backend.
+- [ ] Integração e testes.
+- [ ] Implementação dos recursos complementares.
+
+## Equipe
+
+Projeto desenvolvido por estudantes do curso Técnico em Desenvolvimento de Sistemas — Proz Educação.
 
 ## Observação
 
-O CitySense é um protótipo acadêmico. O registro de uma ocorrência na plataforma não representa automaticamente uma solicitação oficial a órgãos públicos.
+O CitySense é um protótipo acadêmico. Não possui integração oficial com a Prefeitura de Montes Claros e não representa um canal oficial de solicitação de serviços públicos.
