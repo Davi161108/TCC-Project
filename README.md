@@ -80,7 +80,7 @@ TCC-Project/
 
 ## Equipe
 
-Projeto desenvolvido por estudantes do curso Técnico em Desenvolvimento de Sistemas — Proz Educação.
+Davi David Aguiar Fonseca & Saulo Gabriel Rodrigues Guimarães
 
 ## Observação
 
