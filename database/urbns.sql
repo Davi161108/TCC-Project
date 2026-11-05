@@ -1,11 +1,11 @@
 
 -- =====================================================
--- CitySense
+-- Urbns
 -- Banco de dados: MySQL
 -- Versão: 1.0
 -- =====================================================
 
-CREATE DATABASE IF NOT EXISTS citysense
+CREATE DATABASE IF NOT EXISTS urbns
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
 
