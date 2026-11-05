@@ -1,6 +1,6 @@
-# CitySense — Documento de Requisitos
+# Urbs — Documento de Requisitos
 
-**Projeto:** CitySense — Plataforma Inteligente de Monitoramento Colaborativo da Infraestrutura Urbana  
+**Projeto:** Urbs — Plataforma Inteligente de Monitoramento Colaborativo da Infraestrutura Urbana  
 **Versão:** 1.0  
 **Local de aplicação:** Montes Claros — MG  
 **Tipo de projeto:** Sistema web com módulo complementar mobile planejado
@@ -9,7 +9,7 @@
 
 ## 1. Apresentação do projeto
 
-O CitySense é uma plataforma digital colaborativa destinada ao registro, à localização, à visualização e ao acompanhamento de problemas relacionados à infraestrutura urbana.
+O Urbs é uma plataforma digital colaborativa destinada ao registro, à localização, à visualização e ao acompanhamento de problemas relacionados à infraestrutura urbana.
 
 A proposta permite que cidadãos e organizações registrem ocorrências, como buracos em vias públicas, problemas de iluminação, calçadas danificadas e descarte irregular de lixo, informando sua localização geográfica.
 
@@ -17,7 +17,7 @@ As ocorrências poderão ser visualizadas em um mapa interativo, consultadas por
 
 O projeto será desenvolvido inicialmente como uma aplicação web responsiva, utilizando tecnologias gratuitas ou de código aberto sempre que possível. A arquitetura deverá permitir a futura integração de uma aplicação mobile.
 
-O CitySense será desenvolvido como protótipo acadêmico, sem representar um canal oficial de comunicação com a Prefeitura de Montes Claros.
+O Urbs será desenvolvido como protótipo acadêmico, sem representar um canal oficial de comunicação com a Prefeitura de Montes Claros.
 
 ## 2. Problema identificado
 
@@ -25,7 +25,7 @@ Problemas relacionados à infraestrutura urbana podem ser encontrados em diferen
 
 Informações dispersas dificultam a visualização dos problemas, a organização dos registros e o acompanhamento de sua situação.
 
-Diante disso, o CitySense propõe uma plataforma colaborativa que centraliza essas informações e utiliza recursos de geolocalização para facilitar sua identificação e visualização.
+Diante disso, o Urbs propõe uma plataforma colaborativa que centraliza essas informações e utiliza recursos de geolocalização para facilitar sua identificação e visualização.
 
 ## 3. Objetivo geral
 
