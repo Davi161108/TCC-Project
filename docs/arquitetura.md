@@ -1,4 +1,4 @@
-# CitySense — Arquitetura do Sistema
+# Urbs — Arquitetura do Sistema
 
 **Versão:** 1.0  
 **Arquitetura:** Cliente-servidor com API REST  
@@ -7,7 +7,7 @@
 
 ## 1. Visão geral
 
-O CitySense utilizará uma arquitetura cliente-servidor organizada em três camadas principais: apresentação, aplicação e persistência de dados.
+O Urbs utilizará uma arquitetura cliente-servidor organizada em três camadas principais: apresentação, aplicação e persistência de dados.
 
 Essa estrutura permitirá separar a interface visual, as regras de negócio e o armazenamento das informações, facilitando a manutenção, os testes e a evolução do sistema.
 
