@@ -2,12 +2,12 @@
 <?php
 
 /**
- * CitySense - Conexão com o banco de dados
+ * Urbns - Conexão com o banco de dados
  * Utilizando PDO e MySQL
  */
 
 $host = getenv('DB_HOST') ?: 'localhost';
-$database = getenv('DB_NAME') ?: 'citysense';
+$database = getenv('DB_NAME') ?: 'urbns';
 $username = getenv('DB_USER') ?: 'root';
 $password = getenv('DB_PASS') ?: '';
 
@@ -24,7 +24,7 @@ try {
     );
 
 } catch (PDOException $e) {
-    error_log('Erro de conexão CitySense: ' . $e->getMessage());
+    error_log('Erro de conexão Urbns: ' . $e->getMessage());
 
     http_response_code(500);
     exit('Não foi possível conectar ao banco de dados.');
