@@ -14,13 +14,13 @@ try {
 
     echo json_encode([
         'success' => true,
-        'message' => 'API CitySense funcionando!',
+        'message' => 'API Urbns funcionando!',
         'database' => 'Conectado',
         'categories_registered' => (int) $result['total']
     ], JSON_UNESCAPED_UNICODE);
 
 } catch (PDOException $e) {
-    error_log('Erro na API CitySense: ' . $e->getMessage());
+    error_log('Erro na API Urbns: ' . $e->getMessage());
 
     http_response_code(500);
 
