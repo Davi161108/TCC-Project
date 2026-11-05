@@ -1,10 +1,10 @@
-# CitySense — Planejamento dos Protótipos de Interface
+# Urbs — Planejamento dos Protótipos de Interface
 
 **Versão:** 1.0
 
 ## 1. Objetivo
 
-Este documento descreve as principais telas da aplicação web CitySense, servindo como referência para a criação dos protótipos e posterior desenvolvimento da interface.
+Este documento descreve as principais telas da aplicação web Urbs, servindo como referência para a criação dos protótipos e posterior desenvolvimento da interface.
 
 A identidade visual deverá transmitir tecnologia, confiança, organização e acessibilidade.
 
@@ -22,7 +22,7 @@ A identidade visual deverá transmitir tecnologia, confiança, organização e a
 
 ### Tela 01 — Página inicial
 
-**Objetivo:** apresentar o CitySense e explicar sua finalidade.
+**Objetivo:** apresentar o Urbs e explicar sua finalidade.
 
 Elementos:
 - Logotipo e nome do sistema.
@@ -175,4 +175,4 @@ Os protótipos deverão considerar pelo menos duas versões:
 
 ## 8. Conclusão
 
-Os protótipos orientarão a construção da interface do CitySense, permitindo avaliar a organização das informações e o fluxo de navegação antes da implementação definitiva.
+Os protótipos orientarão a construção da interface do Urbs, permitindo avaliar a organização das informações e o fluxo de navegação antes da implementação definitiva.
