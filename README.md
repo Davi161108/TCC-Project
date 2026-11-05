@@ -171,4 +171,4 @@ Projeto desenvolvido como Trabalho de Conclusão de Curso do Técnico em Desenvo
 
 O Urbs é um protótipo acadêmico. Não possui integração oficial com a Prefeitura de Montes Claros e não representa um canal oficial de solicitação de serviços públicos.
 
-As ocorrências registradas na plataforma têm finalidade demonstrativa e de monitoramento colaborativo dentro do escopo do projeto.</
+As ocorrências registradas na plataforma têm finalidade demonstrativa e de monitoramento colaborativo dentro do escopo do projeto.
