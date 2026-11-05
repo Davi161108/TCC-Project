@@ -1,11 +1,11 @@
-# CitySense — Modelo Entidade-Relacionamento (DER)
+# Urbns — Modelo Entidade-Relacionamento (DER)
 
 **Versão:** 1.0  
 **Banco de dados:** MySQL
 
 ## 1. Objetivo
 
-Este documento apresenta a modelagem inicial do banco de dados do CitySense, identificando suas entidades, atributos, chaves e relacionamentos.
+Este documento apresenta a modelagem inicial do banco de dados do Urbns, identificando suas entidades, atributos, chaves e relacionamentos.
 
 O modelo busca garantir integridade, organização e consistência das informações armazenadas.
 
@@ -177,4 +177,4 @@ As categorias, por exemplo, são armazenadas separadamente, evitando repetir seu
 
 ## 9. Conclusão
 
-O modelo inicial possui quatro entidades principais e relacionamentos que permitem implementar as funcionalidades centrais do CitySense. A estrutura atende à necessidade de armazenamento de usuários, categorias, ocorrências e acompanhamento de alterações.
+O modelo inicial possui quatro entidades principais e relacionamentos que permitem implementar as funcionalidades centrais do Urbns. A estrutura atende à necessidade de armazenamento de usuários, categorias, ocorrências e acompanhamento de alterações.
