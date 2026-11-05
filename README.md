@@ -1,8 +1,8 @@
-# Urbns
+# Urbs
 
 ### Plataforma Inteligente de Monitoramento Colaborativo da Infraestrutura Urbana
 
-O **Urbns** é um projeto acadêmico que propõe uma plataforma digital colaborativa para registrar, localizar, visualizar e acompanhar problemas relacionados à infraestrutura urbana.
+O **Urbs** é um projeto acadêmico que propõe uma plataforma digital colaborativa para registrar, localizar, visualizar e acompanhar problemas relacionados à infraestrutura urbana.
 
 A plataforma busca centralizar informações sobre ocorrências como buracos em vias públicas, iluminação defeituosa, calçadas danificadas e descarte irregular de resíduos, utilizando geolocalização e visualização em mapas interativos.
 
@@ -84,4 +84,4 @@ Davi David Aguiar Fonseca & Saulo Gabriel Rodrigues Guimarães
 
 ## Observação
 
-O Urbns é um protótipo acadêmico. Não possui integração oficial com a Prefeitura de Montes Claros e não representa um canal oficial de solicitação de serviços públicos.
+O Urbs é um protótipo acadêmico. Não possui integração oficial com a Prefeitura de Montes Claros e não representa um canal oficial de solicitação de serviços públicos.
