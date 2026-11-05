@@ -2,12 +2,12 @@
 <?php
 
 /**
- * Urbns - Conexão com o banco de dados
+ * Urbs - Conexão com o banco de dados
  * Utilizando PDO e MySQL
  */
 
 $host = getenv('DB_HOST') ?: 'localhost';
-$database = getenv('DB_NAME') ?: 'urbns';
+$database = getenv('DB_NAME') ?: 'urbs';
 $username = getenv('DB_USER') ?: 'root';
 $password = getenv('DB_PASS') ?: '';
 
