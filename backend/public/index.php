@@ -14,13 +14,13 @@ try {
 
     echo json_encode([
         'success' => true,
-        'message' => 'API Urbns funcionando!',
+        'message' => 'API Urbs funcionando!',
         'database' => 'Conectado',
         'categories_registered' => (int) $result['total']
     ], JSON_UNESCAPED_UNICODE);
 
 } catch (PDOException $e) {
-    error_log('Erro na API Urbns: ' . $e->getMessage());
+    error_log('Erro na API Urbs: ' . $e->getMessage());
 
     http_response_code(500);
 
