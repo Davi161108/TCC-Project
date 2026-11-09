@@ -4,7 +4,7 @@
 /**
  * Urbs - Conexão com o banco de dados
  * Utilizando PDO e MySQL
- */
+*/
 
 $host = getenv('DB_HOST') ?: 'localhost';
 $database = getenv('DB_NAME') ?: 'urbs';
@@ -24,7 +24,7 @@ try {
     );
 
 } catch (PDOException $e) {
-    error_log('Erro de conexão Urbns: ' . $e->getMessage());
+    error_log('Erro de conexão Urbs: ' . $e->getMessage());
 
     http_response_code(500);
     exit('Não foi possível conectar ao banco de dados.');

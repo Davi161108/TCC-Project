@@ -71,7 +71,7 @@ try {
     ]);
 
 } catch (PDOException $e) {
-    error_log('Erro no login CitySense: ' . $e->getMessage());
+    error_log('Erro no login Urbs: ' . $e->getMessage());
     response(500, [
         'success' => false,
         'message' => 'Não foi possível realizar o login devido a um erro no servidor.'

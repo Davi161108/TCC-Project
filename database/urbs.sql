@@ -9,7 +9,7 @@ CREATE DATABASE IF NOT EXISTS urbs
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
 
-USE citysense;
+USE urbs;
 
 -- =====================================================
 -- 1. TABELA DE USUÁRIOS
