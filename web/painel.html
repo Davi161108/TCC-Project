@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Urbs - Painel de Controle</title>
+    <style>
+        body { font-family: 'Inter', sans-serif; padding: 20px; background: #f3f4f6; }
+        .card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); max-width: 400px; }
+        input, select, button { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background: #2563eb; color: white; border: none; font-weight: bold; cursor: pointer; }
+        button:hover { background: #1d4ed8; }
+        .mensagem { color: #16a34a; font-size: 14px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h2>Urbs - Teste de Integração</h2>
+
+    <!-- FORMULÁRIO DE LOGIN -->
+    <div class="card">
+        <h3>1. Fazer Login</h3>
+        <input type="email" id="loginEmail" placeholder="Seu E-mail (ex: davi@urbs.pt)">
+        <input type="password" id="loginSenha" placeholder="Sua Senha">
+        <button onclick="logar()">Entrar</button>
+        <p id="msgLogin" class="mensagem"></p>
+    </div>
+
+    <!-- FORMULÁRIO DE NOVA OCORRÊNCIA -->
+    <div class="card" id="areaOcorrencia" style="opacity: 0.5; pointer-events: none;">
+        <h3>2. Registrar Ocorrência</h3>
+        <p style="font-size: 12px; color: #666;">(Só funciona após o login)</p>
+        <input type="text" id="titulo" placeholder="Título (ex: Buraco na via)">
+        <input type="text" id="descricao" placeholder="Descrição">
+        <select id="categoria">
+            <option value="1">Buracos em vias públicas</option>
+            <option value="2">Iluminação pública</option>
+        </select>
+        <!-- Coordenadas fictícias de Montes Claros para teste -->
+        <input type="number" id="lat" value="-16.7286" placeholder="Latitude">
+        <input type="number" id="lng" value="-43.8582" placeholder="Longitude">
+        <button onclick="criarOcorrencia()">Salvar Ocorrência</button>
+        <p id="msgOcorrencia" class="mensagem"></p>
+    </div>
+
+    <!-- BOTÃO PARA ABRIR O MAPA -->
+    <div class="card">
+        <h3>3. Visualizar no Mapa</h3>
+        <button onclick="window.open('mapa.html', '_blank')" style="background: #10b981;">Abrir Mapa de Ocorrências</button>
+    </div>
+
+    <script>
+        // Ajuste este caminho base (URL) conforme o nome da sua pasta no XAMPP!
+        const BASE_URL = 'http://localhost/TCC-Project-main/backend/public/api';
+
+        // Função de Login
+        async function logar() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginSenha').value;
+
+            const res = await fetch(`${BASE_URL}/auth/login.php`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                document.getElementById('msgLogin').innerText = "Login realizado! O navegador salvou a sessão.";
+                // Libera a área de criar ocorrência
+                document.getElementById('areaOcorrencia').style.opacity = "1";
+                document.getElementById('areaOcorrencia').style.pointerEvents = "auto";
+            } else {
+                alert("Erro: " + data.message);
+            }
+        }
+
+        // Função para Registrar Ocorrência
+        async function criarOcorrencia() {
+            const payload = {
+                title: document.getElementById('titulo').value,
+                description: document.getElementById('descricao').value,
+                category_id: parseInt(document.getElementById('categoria').value),
+                latitude: parseFloat(document.getElementById('lat').value),
+                longitude: parseFloat(document.getElementById('lng').value)
+            };
+
+            const res = await fetch(`${BASE_URL}/occurrences/create.php`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                document.getElementById('msgOcorrencia').innerText = "Salvo com sucesso no banco!";
+            } else {
+                alert("Erro: " + data.message);
+            }
+        }
+    </script>
+</body>
+</html>

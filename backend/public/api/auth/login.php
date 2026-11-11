@@ -40,33 +40,37 @@ if ($email === '' || $password === '') {
 }
 
 try {
-    // Buscar o usuário pelo e-mail
-    $sql = "SELECT id, name, password, role FROM users WHERE email = :email LIMIT 1";
+    // Buscar o usuário pelo e-mail, incluindo a categoria e empresa (se for resolver)
+    $sql = "SELECT id, name, password, role, category_id, company_name 
+            FROM users 
+            WHERE email = :email 
+            LIMIT 1";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':email' => $email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Verificar se o usuário existe e se a senha bate com o hash salvo no banco
     if (!$user || !password_verify($password, $user['password'])) {
-        // Usamos a mesma mensagem genérica para e-mail ou senha errados por segurança
         response(401, [
             'success' => false,
             'message' => 'E-mail ou senha incorretos.'
         ]);
     }
 
-    // Criar as variáveis de sessão para manter o usuário logado
-    $_SESSION['user_id'] = $user['id'];
+    // Salvar dados na sessão
+    $_SESSION['user_id'] = (int) $user['id'];
     $_SESSION['role'] = $user['role'];
     $_SESSION['name'] = $user['name'];
+    $_SESSION['category_id'] = $user['category_id'] ? (int) $user['category_id'] : null;
 
     response(200, [
         'success' => true,
         'message' => 'Login realizado com sucesso!',
         'user' => [
-            'id' => $user['id'],
+            'id' => (int) $user['id'],
             'name' => $user['name'],
-            'role' => $user['role']
+            'role' => $user['role'],
+            'category_id' => $_SESSION['category_id'],
+            'company_name' => $user['company_name']
         ]
     ]);
 
