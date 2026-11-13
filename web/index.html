@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urbs — Spatial Intelligence</title>
+
+    <!-- Tipografia Editorial: Outfit + Plus Jakarta Sans + JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Ícones RemixIcon -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+
+    <!-- CSS do Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- CSS Principal do Urbs -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- CONTAINER DE NOTIFICAÇÕES (TOAST) -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- CORTINA DE TRANSIÇÃO ATMOSFÉRICA -->
+    <div id="atmosphereFlash" class="atmosphere-flash"></div>
+
+    <!-- ================= PALCO ESPACIAL 3D (LOGIN / CADASTRO) ================= -->
+    <section id="authScreen" class="space-stage">
+        <!-- Halo de profundidade interativo que acompanha o mouse -->
+        <div id="mouseDepthAura" class="mouse-depth-aura"></div>
+
+        <!-- Canvas Three.js (Terra Realista + Anéis de Profundidade + Estrelas) -->
+        <canvas id="globeCanvas"></canvas>
+
+        <!-- HUD de Mergulho Orbital -->
+        <div id="diveHud" class="dive-hud hidden">
+            <div class="dive-ring"></div>
+            <div class="dive-text">
+                <span>APROXIMAÇÃO ORBITAL</span>
+                <strong>Montes Claros, MG • 16°43'S 43°51'W</strong>
+            </div>
+        </div>
+
+        <!-- Topo da Tela Espacial (Logo Clicável) -->
+        <header class="space-header">
+            <button type="button" class="brand-trigger" onclick="voltarParaTelaInicial()" title="Voltar à tela inicial">
+                <div class="urbs-mark">
+                    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="18" cy="18" r="15.5" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.2"/>
+                        <ellipse cx="18" cy="18" rx="15.5" ry="6.5" transform="rotate(-24 18 18)" stroke="currentColor" stroke-width="1.5"/>
+                        <circle cx="18" cy="18" r="4" fill="currentColor"/>
+                        <circle cx="28.5" cy="13.5" r="2" fill="#60a5fa"/>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <strong>URBS</strong>
+                    <span>SPATIAL INTELLIGENCE</span>
+                </div>
+            </button>
+        </header>
+
+        <!-- Dica sutil de interatividade do globo -->
+        <div id="globeHint" class="globe-hint">
+            <span class="hint-dot"></span> Arraste o globo ou mova o cursor para explorar a órbita
+        </div>
+
+        <!-- CARD DE LOGIN (Direita) -->
+        <div id="loginPanel" class="orbital-card card-right">
+            <div class="card-header">
+                <h2>Bem-vindo de volta</h2>
+                <p>Acesse sua conta para monitorar a malha urbana.</p>
+            </div>
+
+            <!-- Contas salvas para troca rápida -->
+            <div id="savedAccountsLoginBox" class="saved-accounts-mini hidden">
+                <span class="mini-label">Contas recentes neste dispositivo</span>
+                <div id="savedAccountsLoginList" class="saved-chips"></div>
+            </div>
+
+            <form id="formLogin" onsubmit="fazerLogin(event)">
+                <div class="orbital-field">
+                    <label for="loginEmail">E-mail</label>
+                    <div class="orbital-input">
+                        <i class="ri-at-line"></i>
+                        <input type="email" id="loginEmail" placeholder="nome@exemplo.com" autocomplete="email" required>
+                    </div>
+                </div>
+
+                <div class="orbital-field">
+                    <label for="loginPassword">Senha</label>
+                    <div class="orbital-input">
+                        <i class="ri-lock-line"></i>
+                        <input type="password" id="loginPassword" placeholder="Digite sua senha" autocomplete="current-password" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-orbital-primary">
+                    <span>Entrar</span>
+                    <i class="ri-arrow-right-up-line"></i>
+                </button>
+            </form>
+
+            <div class="orbital-footer">
+                <span>Novo por aqui?</span>
+                <button type="button" class="btn-link-clean" onclick="girarParaCadastro()">
+                    Não possuo cadastro <i class="ri-arrow-right-line"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- CARD DE CADASTRO (Esquerda) -->
+        <div id="registerPanel" class="orbital-card card-left pointer-none">
+            <div class="card-header">
+                <h2>Criar conta</h2>
+                <p>Preencha seus dados para registrar e acompanhar ocorrências.</p>
+            </div>
+
+            <form id="formRegister" onsubmit="fazerCadastro(event)">
+                <div class="orbital-field">
+                    <label for="regName">Nome completo</label>
+                    <div class="orbital-input">
+                        <i class="ri-user-line"></i>
+                        <input type="text" id="regName" placeholder="Seu nome completo" required>
+                    </div>
+                </div>
+
+                <div class="orbital-field">
+                    <label for="regEmail">E-mail</label>
+                    <div class="orbital-input">
+                        <i class="ri-at-line"></i>
+                        <input type="email" id="regEmail" placeholder="nome@exemplo.com" required>
+                    </div>
+                </div>
+
+                <div class="orbital-field">
+                    <label for="regPassword">Senha</label>
+                    <div class="orbital-input">
+                        <i class="ri-lock-line"></i>
+                        <input type="password" id="regPassword" placeholder="Mínimo de 8 caracteres" minlength="8" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-orbital-primary">
+                    <span>Criar cadastro</span>
+                    <i class="ri-check-line"></i>
+                </button>
+            </form>
+
+            <div class="orbital-footer">
+                <span>Já possui uma conta?</span>
+                <button type="button" class="btn-link-clean" onclick="rebobinarParaLogin()">
+                    <i class="ri-arrow-left-line"></i> Voltar para o login
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= APLICAÇÃO PRINCIPAL (INTERFACE CLARA E MODERNA) ================= -->
+    <div id="appContainer" class="app-shell hidden">
+
+        <!-- BARRA SUPERIOR -->
+        <header class="app-topbar">
+            <div class="topbar-left">
+                <!-- Logo URBS Clicável para voltar à tela inicial -->
+                <button type="button" class="app-logo-btn" onclick="voltarParaTelaInicial()" title="Voltar para a tela inicial">
+                    <div class="urbs-mark-app">
+                        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="18" cy="18" r="15.5" stroke="currentColor" stroke-opacity="0.3" stroke-width="1.4"/>
+                            <ellipse cx="18" cy="18" rx="15.5" ry="6.5" transform="rotate(-24 18 18)" stroke="currentColor" stroke-width="1.8"/>
+                            <circle cx="18" cy="18" r="4" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <div class="app-logo-copy">
+                        <strong>URBS</strong>
+                        <span>SPATIAL INTELLIGENCE</span>
+                    </div>
+                </button>
+
+                <nav class="app-nav">
+                    <button id="navMapa" class="app-nav-btn active" onclick="mudarVisao('mapa')">
+                        <i class="ri-compass-3-line"></i> Mapa Urbano
+                    </button>
+                    <button id="navDashboard" class="app-nav-btn hidden" onclick="mudarVisao('dashboard')">
+                        <i class="ri-bar-chart-grouped-line"></i> Gestão & Métricas
+                    </button>
+                    <button id="navParcerias" class="app-nav-btn hidden" onclick="mudarVisao('parcerias')">
+                        <i class="ri-building-line"></i> Credenciamentos
+                    </button>
+                </nav>
+            </div>
+
+            <div class="topbar-right">
+                <button id="btnSolicitarParceria" class="btn-soft-emerald" onclick="abrirModalParceria()">
+                    <i class="ri-briefcase-line"></i> Solicitar Perfil Empresa
+                </button>
+
+                <!-- Alternador de Contas -->
+                <div class="account-control">
+                    <button class="user-switcher-btn" onclick="abrirModalContas()" title="Alternar entre contas">
+                        <div id="userInitials" class="user-avatar">D</div>
+                        <div class="user-info-text">
+                            <strong id="userNameDisplay">Usuário</strong>
+                            <span id="roleBadge">Cidadão</span>
+                        </div>
+                        <i class="ri-expand-up-down-line switch-icon"></i>
+                    </button>
+                </div>
+
+                <button class="btn-logout-clean" onclick="fazerLogout()" title="Encerrar sessão">
+                    <i class="ri-logout-box-r-line"></i>
+                    <span>Sair</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- ================= VISÃO 1: MAPA + PAINEL EXPLORADOR ================= -->
+        <main id="viewMapa" class="city-workspace">
+
+            <aside class="city-sidebar">
+                <div class="sidebar-top">
+                    <div class="sidebar-title-row">
+                        <div>
+                            <h2>Montes Claros</h2>
+                            <p id="contadorFeed">Monitoramento ativo</p>
+                        </div>
+                        <button class="btn-primary-action" onclick="iniciarNovaOcorrencia()">
+                            <i class="ri-add-line"></i> Nova Ocorrência
+                        </button>
+                    </div>
+
+                    <div class="status-pills">
+                        <button class="s-pill active" onclick="filtrarPorStatusRapido('', this)">
+                            <span>Todas</span>
+                            <strong id="miniTotal">0</strong>
+                        </button>
+                        <button class="s-pill warn" onclick="filtrarPorStatusRapido('pending', this)">
+                            <span>Pendentes</span>
+                            <strong id="miniPending">0</strong>
+                        </button>
+                        <button class="s-pill info" onclick="filtrarPorStatusRapido('in_analysis', this)">
+                            <span>Análise</span>
+                            <strong id="miniAnalysis">0</strong>
+                        </button>
+                        <button class="s-pill ok" onclick="filtrarPorStatusRapido('resolved', this)">
+                            <span>Resolvidas</span>
+                            <strong id="miniResolved">0</strong>
+                        </button>
+                    </div>
+
+                    <div class="search-input-box">
+                        <i class="ri-search-line"></i>
+                        <input type="text" id="inputBuscaTexto" placeholder="Filtrar por rua, título ou descrição..." oninput="renderizarFeedEMarcadores()">
+                    </div>
+
+                    <div class="filter-bar">
+                        <select id="filtroCategoria" onchange="carregarOcorrencias()">
+                            <option value="">Todas as categorias</option>
+                            <option value="1">Buracos em vias públicas</option>
+                            <option value="2">Iluminação pública</option>
+                            <option value="3">Calçadas danificadas</option>
+                            <option value="4">Descarte irregular de lixo</option>
+                            <option value="5">Sinalização danificada</option>
+                            <option value="6">Outros problemas</option>
+                        </select>
+
+                        <select id="filtroStatus" class="hidden" onchange="carregarOcorrencias()">
+                            <option value="">Todos</option>
+                            <option value="pending">Pendente</option>
+                            <option value="in_analysis">Em Análise</option>
+                            <option value="resolved">Resolvida</option>
+                            <option value="rejected">Rejeitada</option>
+                        </select>
+
+                        <label class="mine-check">
+                            <input type="checkbox" id="filtroMinhas" onchange="carregarOcorrencias()">
+                            <span>Meus registros</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="occurrencesFeed" class="feed-list"></div>
+            </aside>
+
+            <!-- Mapa Interativo -->
+            <section class="map-stage">
+                <div id="map" class="leaflet-light-map"></div>
+
+                <div class="map-floating-controls">
+                    <div class="layer-pills">
+                        <button id="btnLayerLight" class="l-pill active" onclick="trocarCamadaMapa('light')">
+                            <i class="ri-map-2-line"></i> Mapa Viário
+                        </button>
+                        <button id="btnLayerSat" class="l-pill" onclick="trocarCamadaMapa('satellite')">
+                            <i class="ri-Dv-line"></i> Satélite
+                        </button>
+                    </div>
+
+                    <button class="btn-map-center" onclick="centralizarMontesClaros()">
+                        <i class="ri-focus-3-line"></i> Centralizar Cidade
+                    </button>
+                </div>
+
+                <div id="mapPickBanner" class="map-instruction-banner hidden">
+                    <span class="ping-indicator"></span>
+                    <span>Clique no local exato do problema no mapa para posicionar o marcador</span>
+                </div>
+
+                <!-- Gaveta Lateral de Registro -->
+                <aside id="drawerOcorrencia" class="floating-drawer hidden">
+                    <div class="drawer-head">
+                        <div>
+                            <span class="kicker-tag">REGISTRO GEORREFERENCIADO</span>
+                            <h3>Nova Ocorrência</h3>
+                        </div>
+                        <button class="btn-icon-close" onclick="fecharDrawerOcorrencia()"><i class="ri-close-line"></i></button>
+                    </div>
+
+                    <form id="formOcorrencia" onsubmit="salvarOcorrencia(event)">
+                        <div class="gps-card">
+                            <div class="gps-card-top">
+                                <strong><i class="ri-compass-discover-line"></i> Coordenadas do Local</strong>
+                                <button type="button" class="btn-use-gps" onclick="usarMeuGPS()">
+                                    <i class="ri-Crosshair-2-line"></i> Usar meu GPS
+                                </button>
+                            </div>
+                            <div id="locationStatusText" class="gps-status waiting">
+                                Clique em um ponto do mapa ao lado para definir o local.
+                            </div>
+                        </div>
+
+                        <label class="form-label">Categoria</label>
+                        <div class="cat-cards-grid">
+                            <div class="cat-item selected" onclick="selecionarCategoriaCard(1, this)">
+                                <i class="ri-road-map-line"></i>
+                                <span>Vias Públicas</span>
+                            </div>
+                            <div class="cat-item" onclick="selecionarCategoriaCard(2, this)">
+                                <i class="ri-lightbulb-line"></i>
+                                <span>Iluminação</span>
+                            </div>
+                            <div class="cat-item" onclick="selecionarCategoriaCard(3, this)">
+                                <i class="ri-footprint-line"></i>
+                                <span>Calçadas</span>
+                            </div>
+                            <div class="cat-item" onclick="selecionarCategoriaCard(4, this)">
+                                <i class="ri-delete-bin-line"></i>
+                                <span>Limpeza</span>
+                            </div>
+                            <div class="cat-item" onclick="selecionarCategoriaCard(5, this)">
+                                <i class="ri-traffic-light-line"></i>
+                                <span>Sinalização</span>
+                            </div>
+                            <div class="cat-item" onclick="selecionarCategoriaCard(6, this)">
+                                <i class="ri-more-2-line"></i>
+                                <span>Outros</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Título da ocorrência</label>
+                            <input type="text" id="occTitle" placeholder="Ex: Asfalto cedendo na Av. Mestra Fininha" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Descrição e referências</label>
+                            <textarea id="occDescription" rows="3" placeholder="Informe detalhes e um ponto de referência próximo..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-primary-full">
+                            <span>Registrar Ocorrência</span>
+                            <i class="ri-arrow-right-up-line"></i>
+                        </button>
+                    </form>
+                </aside>
+            </section>
+        </main>
+
+        <!-- ================= VISÃO 2: PAINEL DE GESTÃO ================= -->
+        <section id="viewDashboard" class="page-view hidden">
+            <div class="page-header">
+                <div>
+                    <span class="kicker-tag">PAINEL DE CONTROLE</span>
+                    <h2>Indicadores e Fila Operacional</h2>
+                </div>
+                <button class="btn-secondary" onclick="carregarDashboard()">
+                    <i class="ri-refresh-line"></i> Atualizar
+                </button>
+            </div>
+
+            <div class="kpi-cards-grid">
+                <div class="kpi-box">
+                    <div class="kpi-box-head">
+                        <span>Total Registrado</span>
+                        <div class="kpi-ico blue"><i class="ri-stack-line"></i></div>
+                    </div>
+                    <strong id="kpiTotal">0</strong>
+                    <small>Ocorrências mapeadas</small>
+                </div>
+
+                <div class="kpi-box">
+                    <div class="kpi-box-head">
+                        <span>Pendentes</span>
+                        <div class="kpi-ico amber"><i class="ri-time-line"></i></div>
+                    </div>
+                    <strong id="kpiPending">0</strong>
+                    <small>Aguardando triagem</small>
+                </div>
+
+                <div class="kpi-box">
+                    <div class="kpi-box-head">
+                        <span>Em Análise</span>
+                        <div class="kpi-ico sky"><i class="ri-loader-2-line"></i></div>
+                    </div>
+                    <strong id="kpiAnalysis">0</strong>
+                    <small>Equipes acionadas</small>
+                </div>
+
+                <div class="kpi-box">
+                    <div class="kpi-box-head">
+                        <span>Resolvidas</span>
+                        <div class="kpi-ico emerald"><i class="ri-check-line"></i></div>
+                    </div>
+                    <strong id="kpiResolved">0</strong>
+                    <small>Atendimentos concluídos</small>
+                </div>
+            </div>
+
+            <div class="charts-row">
+                <div class="white-card">
+                    <h3>Demanda por Setor</h3>
+                    <div class="chart-box">
+                        <canvas id="chartCategories"></canvas>
+                    </div>
+                </div>
+                <div class="white-card">
+                    <h3>Proporção por Status</h3>
+                    <div class="chart-box">
+                        <canvas id="chartStatus"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="white-card">
+                <h3>Gerenciamento de Ocorrências</h3>
+                <div class="table-wrap">
+                    <table class="clean-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Ocorrência</th>
+                                <th>Categoria</th>
+                                <th>Autor</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelaGestaoBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VISÃO 3: APROVAÇÃO DE EMPRESAS (MASTER) ================= -->
+        <section id="viewParcerias" class="page-view hidden">
+            <div class="page-header">
+                <div>
+                    <span class="kicker-tag">GOVERNANÇA MASTER</span>
+                    <h2>Credenciamento de Empresas Solucionadoras</h2>
+                </div>
+                <button class="btn-secondary" onclick="carregarSolicitacoesParceria()">
+                    <i class="ri-refresh-line"></i> Atualizar Lista
+                </button>
+            </div>
+
+            <div class="white-card">
+                <div class="table-wrap">
+                    <table class="clean-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Razão Social / Fantasia</th>
+                                <th>CNPJ / MEI</th>
+                                <th>Solicitante</th>
+                                <th>Setor</th>
+                                <th>Justificativa</th>
+                                <th>Status</th>
+                                <th>Decisão</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelaParceriasBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ================= MODAL: ALTERNAR CONTA ================= -->
+    <div id="modalContas" class="modal-backdrop hidden">
+        <div class="modal-sheet">
+            <div class="modal-sheet-head">
+                <h3>Alternar Conta</h3>
+                <button class="btn-icon-close" onclick="fecharModais()"><i class="ri-close-line"></i></button>
+            </div>
+            <p class="modal-sub">Selecione uma conta utilizada recentemente ou volte ao globo para entrar com outro perfil.</p>
+
+            <div id="accountSwitcherList" class="account-list"></div>
+
+            <div class="modal-sheet-foot">
+                <button class="btn-secondary full-width" onclick="adicionarOutraConta()">
+                    <i class="ri-user-add-line"></i> Acessar outra conta
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: HISTÓRICO ================= -->
+    <div id="modalHistorico" class="modal-backdrop hidden">
+        <div class="modal-sheet">
+            <div class="modal-sheet-head">
+                <h3>Histórico de Atualizações</h3>
+                <button class="btn-icon-close" onclick="fecharModais()"><i class="ri-close-line"></i></button>
+            </div>
+            <div id="timelineContainer" class="timeline-box"></div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: ATUALIZAR STATUS ================= -->
+    <div id="modalStatus" class="modal-backdrop hidden">
+        <div class="modal-sheet">
+            <div class="modal-sheet-head">
+                <h3>Atualizar Status</h3>
+                <button class="btn-icon-close" onclick="fecharModais()"><i class="ri-close-line"></i></button>
+            </div>
+            <form onsubmit="confirmarAtualizacaoStatus(event)">
+                <input type="hidden" id="statusOccId">
+                <div class="form-group">
+                    <label class="form-label">Novo Status</label>
+                    <select id="statusNovoValor" required>
+                        <option value="pending">Pendente</option>
+                        <option value="in_analysis">Em Análise</option>
+                        <option value="resolved">Resolvida</option>
+                        <option value="rejected">Rejeitada</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Parecer Técnico</label>
+                    <textarea id="statusComentario" rows="3" placeholder="Descreva a atualização para registro no histórico..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary-full">Confirmar Atualização</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: CREDENCIAR EMPRESA ================= -->
+    <div id="modalParceria" class="modal-backdrop hidden">
+        <div class="modal-sheet">
+            <div class="modal-sheet-head">
+                <h3>Solicitar Credenciamento de Empresa</h3>
+                <button class="btn-icon-close" onclick="fecharModais()"><i class="ri-close-line"></i></button>
+            </div>
+            <form onsubmit="enviarSolicitacaoParceria(event)">
+                <p class="modal-sub">Organizações e prestadores (CNPJ/MEI) podem solicitar acesso operacional para gerenciar ocorrências do seu setor.</p>
+
+                <div class="form-group">
+                    <label class="form-label">Razão Social / Nome Fantasia</label>
+                    <input type="text" id="partCompany" placeholder="Nome da empresa ou organização" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">CNPJ / MEI</label>
+                    <input type="text" id="partCnpj" placeholder="00.000.000/0001-00" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Setor de Atuação</label>
+                    <select id="partCategory" required>
+                        <option value="1">Buracos em vias públicas</option>
+                        <option value="2">Iluminação pública</option>
+                        <option value="3">Calçadas danificadas</option>
+                        <option value="4">Descarte irregular de lixo</option>
+                        <option value="5">Sinalização danificada</option>
+                        <option value="6">Outros problemas</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Justificativa</label>
+                    <textarea id="partJustification" rows="3" placeholder="Descreva a atuação da empresa no município..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary-full">Enviar Solicitação</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bibliotecas Externas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

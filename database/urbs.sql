@@ -164,6 +164,36 @@ INSERT IGNORE INTO categories (name, description) VALUES
     'Outras ocorrências relacionadas à infraestrutura urbana.'
 );
 
+-- 1. Garante que nenhum usuário tenha um valor inválido antes de mudar a regra
+UPDATE users SET role = 'citizen';
+
+-- 2. Atualiza a coluna role para aceitar citizen, resolver e master
+ALTER TABLE users 
+MODIFY COLUMN role ENUM('citizen', 'resolver', 'master') NOT NULL DEFAULT 'citizen';
+
+-- 3. Garante que as colunas extras de empresa existam (sem dar erro se já existirem)
+ALTER TABLE users 
+ADD COLUMN IF NOT EXISTS category_id INT NULL AFTER role,
+ADD COLUMN IF NOT EXISTS company_name VARCHAR(150) NULL AFTER category_id,
+ADD COLUMN IF NOT EXISTS cnpj VARCHAR(20) NULL AFTER company_name;
+
+-- 4. Promove o seu usuário para master
+UPDATE users SET role = 'master' WHERE email = 'davi@urbs.pt';
+
+-- 5. Cria a tabela de solicitações de parceria
+CREATE TABLE IF NOT EXISTS partner_requests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    category_id INT NOT NULL,
+    company_name VARCHAR(150) NOT NULL,
+    cnpj VARCHAR(20) NOT NULL,
+    justification TEXT NULL,
+    status ENUM('pending', 'approved', 'rejected') NOT NULL DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_partner_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_partner_category FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- =====================================================
 -- FIM DO SCRIPT
 -- =====================================================
